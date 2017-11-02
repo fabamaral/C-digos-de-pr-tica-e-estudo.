@@ -1,0 +1,82 @@
+import sqlite3
+conn = sqlite3.connect("Sistema")
+c = conn.cursor()
+
+c.execute("CREATE TABLE IF NOT EXISTS cadastrosistema( id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nome TEXT, cpf TEXT, uf VARCHAR(2))")
+
+def adiciona_dados():
+    novo_nome = nome_var
+    novo_cpf = cpf_var
+    novo_uf = uf_var
+    c.execute("INSERT INTO cadastrosistema (nome, cpf, uf) VALUES(?, ?, ?)", (novo_nome, novo_cpf, novo_uf))
+    conn.commit()
+
+def localiza_cpf():
+    c.execute("SELECT nome, cpf, uf FROM cadastrosistema WHERE cpf = %s" % (cpf_var))
+    for linha in c.fetchall():
+            print("Nome: " + linha[0])
+            print("CPF: " + linha[1])
+            print("UF: " + linha[2])
+
+
+c.execute("SELECT * FROM cadastrosistema")
+cpf_list = []
+for cpfs in c.fetchall():
+        cpf_list.append(cpfs[2])
+
+
+print('Bem-vindo ao sistema.')
+print('Se já possui cadastro digite 1, senão digite 2.')
+
+while True:
+    try:
+        verificar = int(input('Digite: '))
+        if verificar == 1 or verificar == 2:
+            break
+        else:
+            print('Digite somente 1 ou 2.')
+    except(Exception):
+        print('Digite somente 1 ou 2.')
+    
+while True:
+    if verificar == 2:
+        print('Criaremos o seu cadastro!')
+        nome_var = input('Digite seu nome completo: ')
+        cpf_var = input('Digite seu CPF: ')
+        uf_var = input('Digite sua UF: ')
+        adiciona_dados()
+        print('Seus dados foram salvos no sistema!')
+        print('Seus dados são:')
+        localiza_cpf()
+        print('Obrigado.')
+        break
+    
+    if verificar == 1:
+        print('Localizaremos o seu cadastro.')
+        contador = 0
+        while contador == 0:
+                cpf_var = input('Digite seu CPF: ')
+            
+                if cpf_var in cpf_list:
+                    print('Localizamos seu cadastro:')
+                    localiza_cpf()
+                    contador = 1
+                    verificar = 3
+                    break
+                else:
+                    print('Não localizamos o seu cadastro.')
+                    print('Tente de novo digitando seu cpf somente com números.')
+                    cpf_var = input('Digite seu CPF: ')
+                    if cpf_var in cpf_list:
+                        print('Localizamos seu cadastro:')
+                        localiza_cpf()
+                        contador = 1
+                        break
+                    else:
+                        verificar2 = input('Você está mesmo cadastrado? (s/n)')
+                        if verificar2 == 's':
+                            print('Tentaremos localizá-lo.')
+                        else:
+                            verificar = 2
+                            contador = 1
+        print('Obrigado.')
