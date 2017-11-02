@@ -1,0 +1,41 @@
+from math import floor
+
+print ("Bem-vindo ao conversor de bases.")
+print ("Aqui converteremos binários e decimais.")
+print("Qual base você dará entrada para conversão?")
+print("[1] Binário para decimal", "\n[2] Decimal para binário")
+base = int(input("Digite: "))
+converter = input("Digite o número que deseja converter: ")
+
+def binario_decimal():
+    contagem = len(converter)                       #lendo quantidade de digitos
+    lista = []
+    for i in converter:                             #
+        lista.append(int(i))                        #separando cada digito, convertendo para inteiro e inserindo em lista
+
+    lista2 = []
+    for termo in lista:                             #abaixo operação aritmética para calcular cada termo
+        contagem = contagem - 1                     #gerando expoentes para multiplicar por 2
+        termo = termo*(2**contagem)                 #multiplicando cada termo por 2 elevado a contagem
+        lista2.append(termo)                        #acrescentando termos em lista
+    print ("Binário para decimal:", sum(lista2))    #imprimindo e somando termos para enfim gerar o número decimal
+
+def decimal_binario():
+    num = int(converter)          #convertendo variável string em inteiro
+    lista3 =[]
+    while num >= 1:               #abaixo operação aritmética para calcular o termo
+        x = num % 2               #x é o resto da divisão (float) do num por 2
+        num = num / 2             #num é o resultado do número dividido por 2, fazendo a função while prosseguir até o fim
+        x = floor(x)              #convertendo o float(x) em inteiro e arredondando para baixo com floor(x), gerando 0 e 1
+        lista3.append(str(x))     #acrescentando x em lista e transformando em string para manipular com função ".join"
+    lista3 = (lista3[::-1])       #invertendo a lista para formar a numeração binária
+    print("Decimal para binário:", int(''.join(lista3))) #removendo termos da lista, eliminando espaços e transformando em int
+    
+if base == 1:
+    binario_decimal()
+elif base == 2:
+    decimal_binario()
+else:
+    print("Digite 1 ou 2.")
+print(" ")
+print("Obrigado.")
