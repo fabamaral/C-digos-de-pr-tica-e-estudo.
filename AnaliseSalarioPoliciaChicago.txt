@@ -1,0 +1,63 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+#----------PRIMEIRA PARTE----------
+
+#conexão com o dataset na variável 'data'.
+data = pd.read_csv('cargos.csv')
+
+#alocando em variável até a penúltima linha da coluna 'Department' (última linha é vazia)
+#transformando a coluna em uma lista
+data1=data['Department'][:-1].tolist() 
+
+#separando dados que contém o dado 'POLICE' em uma lista e alocando os demais em outra lista
+police=[]
+others=[]
+for i in data1:            
+    if i == 'POLICE':
+        police.append(i)
+    else:
+        others.append(i)
+
+#armazendo porcentagens em variáveis
+ppolicia = len(police)*100 / len(data1)
+poutros = 100 - ppolicia
+
+#definindo os argumentos para o gráfico, comentários e gerando o gráfico pizza
+fatias = [len(police), len(others)]
+divisao = ['Policiais - {:.0f}%'.format(ppolicia), 'Outros - {:.0f}%'.format(poutros)]
+print('Dentro de um banco de dados com ', len(data1), 'amostras de funcionários públicos na cidade de Chicago,\n'
+     'temos que {:.0f}% são policiais, e {:.0f}% é divido entre outros cargos públicos.'.format(ppolicia, poutros))
+plt.pie(fatias, labels = divisao, colors = ('r', 'c'), startangle = 100, shadow = True, explode = (0.05,0))
+plt.show()
+
+#----------SEGUNDA PARTE----------
+
+#alocando em variável até a penúltima linha da coluna 'Employee Annual Salary' (última linha é vazia)
+data2=data['Employee Annual Salary'][:-1]
+datasoma=data1+data2           #somando duas colunas
+data3=datasoma.tolist()        #transformando a soma de colunas numa lista
+
+#separando os termos que possuam a palavra 'POLICE' no começo e armazenando SOMENTE as strings de números numa lista
+policia2=[]
+for i in data3:
+    if i[:6] == 'POLICE':
+        policia2.append((i[7:-3]))
+
+#transformando as strings da lista policia2 em números inteiros, descartando possíveis erros e armazenando em lista
+#nesse processo apenas 4 dados de salários que possuiam erros e não poderiam virar int foram descartados
+salarios=[]
+for i in policia2:
+    try:
+        salarios.append(int(i))
+    except(Exception):
+        pass
+
+#definindo argumentos para o gráfico, comentários e gerando gráfico barra
+media = sum(salarios)/len(salarios)        #média dos salarios
+sal = [x for x in range(len(salarios))]    #processo que conta de um em um e armazena a quantidade de termos da lista salarios
+print('A faixa salarial desses policiais varia entre ${}.00 e ${}.00 anualmente,\nonde a média de todos os {} registros '
+      'resulta num valor de ${:.0f}.00'.format(min(salarios), max(salarios), len(salarios), media))
+plt.bar(sal, salarios, width=10)
+plt.show()
