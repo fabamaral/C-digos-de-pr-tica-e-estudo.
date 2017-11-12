@@ -4,14 +4,14 @@ import matplotlib.pyplot as plt
 
 #----------PRIMEIRA PARTE----------
 
-#conex„o com o dataset na vari·vel 'data'.
+#conex√£o com o dataset na vari√°vel 'data'.
 data = pd.read_csv('cargos.csv')
 
-#alocando em vari·vel atÈ a pen˙ltima linha da coluna 'Department' (˙ltima linha È vazia)
+#alocando em vari√°vel at√© a pen√∫ltima linha da coluna 'Department' (√∫ltima linha √© vazia)
 #transformando a coluna em uma lista
 data1=data['Department'][:-1].tolist() 
 
-#separando dados que contÈm o dado 'POLICE' em uma lista e alocando os demais em outra lista
+#separando dados que cont√©m o dado 'POLICE' em uma lista e alocando os demais em outra lista
 police=[]
 others=[]
 for i in data1:            
@@ -20,33 +20,33 @@ for i in data1:
     else:
         others.append(i)
 
-#armazendo porcentagens em vari·veis
+#armazendo porcentagens em vari√°veis
 ppolicia = len(police)*100 / len(data1)
 poutros = 100 - ppolicia
 
-#definindo os argumentos para o gr·fico, coment·rios e gerando o gr·fico pizza
+#definindo os argumentos para o gr√°fico, coment√°rios e gerando o gr√°fico pizza
 fatias = [len(police), len(others)]
 divisao = ['Policiais - {:.0f}%'.format(ppolicia), 'Outros - {:.0f}%'.format(poutros)]
-print('Dentro de um banco de dados com ', len(data1), 'amostras de funcion·rios p˙blicos na cidade de Chicago,\n'
-     'temos que {:.0f}% s„o policiais, e {:.0f}% È divido entre outros cargos p˙blicos.'.format(ppolicia, poutros))
+print('Dentro de um banco de dados com ', len(data1), 'amostras de funcion√°rios p√∫blicos na cidade de Chicago,\n'
+     'temos que {:.0f}% s√£o policiais, e {:.0f}% √© divido entre outros cargos p√∫blicos.'.format(ppolicia, poutros))
 plt.pie(fatias, labels = divisao, colors = ('r', 'c'), startangle = 100, shadow = True, explode = (0.05,0))
 plt.show()
 
 #----------SEGUNDA PARTE----------
 
-#alocando em vari·vel atÈ a pen˙ltima linha da coluna 'Employee Annual Salary' (˙ltima linha È vazia)
+#alocando em vari√°vel at√© a pen√∫ltima linha da coluna 'Employee Annual Salary' (√∫ltima linha √© vazia)
 data2=data['Employee Annual Salary'][:-1]
 datasoma=data1+data2           #somando duas colunas
 data3=datasoma.tolist()        #transformando a soma de colunas numa lista
 
-#separando os termos que possuam a palavra 'POLICE' no comeÁo e armazenando SOMENTE as strings de n˙meros numa lista
+#separando os termos que possuam a palavra 'POLICE' no come√ßo e armazenando SOMENTE as strings de n√∫meros numa lista
 policia2=[]
 for i in data3:
     if i[:6] == 'POLICE':
         policia2.append((i[7:-3]))
 
-#transformando as strings da lista policia2 em n˙meros inteiros, descartando possÌveis erros e armazenando em lista
-#nesse processo apenas 4 dados de sal·rios que possuiam erros e n„o poderiam virar int foram descartados
+#transformando as strings da lista policia2 em n√∫meros inteiros, descartando poss√≠veis erros e armazenando em lista
+#nesse processo apenas 2 dados de sal√°rios que possuiam erros e n√£o poderiam virar int foram descartados
 salarios=[]
 for i in policia2:
     try:
@@ -54,10 +54,10 @@ for i in policia2:
     except(Exception):
         pass
 
-#definindo argumentos para o gr·fico, coment·rios e gerando gr·fico barra
-media = sum(salarios)/len(salarios)        #mÈdia dos salarios
+#definindo argumentos para o gr√°fico, coment√°rios e gerando gr√°fico barra
+media = sum(salarios)/len(salarios)        #m√©dia dos salarios
 sal = [x for x in range(len(salarios))]    #processo que conta de um em um e armazena a quantidade de termos da lista salarios
-print('A faixa salarial desses policiais varia entre ${}.00 e ${}.00 anualmente,\nonde a mÈdia de todos os {} registros '
+print('A faixa salarial desses policiais varia entre ${}.00 e ${}.00 anualmente,\nonde a m√©dia de todos os {} registros '
       'resulta num valor de ${:.0f}.00'.format(min(salarios), max(salarios), len(salarios), media))
 plt.bar(sal, salarios, width=10)
 plt.show()
